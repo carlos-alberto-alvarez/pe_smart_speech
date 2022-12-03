@@ -1,0 +1,6 @@
+1. Donde obtener las llamadas.
+- Actualmente se guardan manualmente en una carpeta.
+- Acción: ver la manera de que tengamos conexion con avaya (con el equipo de avaya) y obtener las grabaciones de manera masiva, o seguir con la manera manual hablando con Carlos.
+Se checo con Bernardo para ver la manera de descargar de manera masiva la información, se le envió correo. Me menciona que se puede descargar, sin embargo no está filtrada. 
+
+
