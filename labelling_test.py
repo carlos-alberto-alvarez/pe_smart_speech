@@ -13,11 +13,11 @@ from pathlib import Path
 import wave
 import time
 
-os.chdir(r'C:\Users\32214609\OneDrive - Anheuser-Busch InBev\Command_CenterPE_TLV\GESTION_GROW_CARE_CALIDAD\PROJ_SPEAK_UP\audios_lima')
+os.chdir(r'C:\Users\32214609\OneDrive - Anheuser-Busch InBev\My Documents\audios_sac')
 
 #%%
 
-filename = '2022111012042444504803446837416701.wav'
+filename = 'America Johana Gonzalez Mendez2.wav'
 
 #%%
 
@@ -85,4 +85,4 @@ EndTime = [item * 1000 for item in label_finish_time]
 
 for i,j in zip(StrtTime, EndTime):
     debug = sound[i:j]
-    debug.export(f'test{i}.wav', format="wav")
+    debug.export(fr'C:\Users\32214609\OneDrive - Anheuser-Busch InBev\My Documents\audios_sac\test_cluster\test{i}.wav', format="wav")

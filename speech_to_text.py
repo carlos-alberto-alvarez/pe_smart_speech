@@ -147,7 +147,7 @@ spanish_stopwords = stopwords.words('spanish')
 
 delete = ['señorita', 'bien', 'momentito', 'muchas', 'gracias', 'tan', 'usted',
           'va', 'entonces', 'ay', 'aqui', 'ahi', '$', 'se', 'ora', 'as', 'caballero', 'whisky','alo', 'pues',
-          '20', 'señora', 'ma', 'ana']
+          '20', 'señora', 'alguna']
 spanish_stopwords = pd.DataFrame(spanish_stopwords)
 delete = pd.DataFrame(delete)
 spanish_stopwords = pd.concat([spanish_stopwords, delete])

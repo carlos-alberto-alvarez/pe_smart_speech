@@ -12,7 +12,9 @@ library(plotly)
 library(ggpubr)
 library(gridExtra)
 library(tictoc)
-library(viridis)
+library(tokenizers)
+library(ggraph)
+library(tidyr)
 
 tic()
 
@@ -32,7 +34,7 @@ tokenized <- unnest_tokens(tbl=file_df,
 
 tokenized %>%
   count(word, sort = TRUE) %>%
-  filter(n > 20) %>%
+  filter(n > 50) %>%
   mutate(word = reorder(word, n)) %>%
   ggplot(aes(word, n)) +
   geom_text(aes(label=n), hjust= -0.2) +
@@ -49,7 +51,7 @@ tokenized_bigrams <- unnest_tokens(tbl=file_df,
 
 tokenized_bigrams %>%
   count(word, sort = TRUE) %>%
-  filter(n > 5) %>%
+  filter(n > 9) %>%
   mutate(word = reorder(word, n)) %>%
   ggplot(aes(word, n)) +
   geom_text(aes(label=n), hjust= -0.2) +
@@ -66,7 +68,7 @@ tokenized_trigrams <- unnest_tokens(tbl=file_df,
 
 tokenized_trigrams %>%
   count(word, sort = TRUE) %>%
-  filter(n > 2) %>%
+  filter(n > 4) %>%
   mutate(word = reorder(word, n)) %>%
   ggplot(aes(word, n)) +
   geom_text(aes(label=n), hjust= -0.2) +
@@ -77,7 +79,11 @@ tokenized_trigrams %>%
 
 tokenized_2 <- get_tokens(file)
 
-sia <- get_nrc_sentiment(tokenized_2, lang='spanish')
+#debug <- tokenize_ngrams(file, n=2)
+
+#debug_2 <- unlist(debug)
+
+sia <- get_nrc_sentiment(debug_2, lang='spanish')
 
 summary(sia)
 
@@ -223,6 +229,48 @@ grid.arrange(plot_positive, plot_negative, ncol = 2)
 
 grid.arrange(plot_joy, plot_sadness, plot_trust, plot_fear, plot_surprise, plot_disgust, nrow = 2, ncol = 3)
 toc()
+
+# Gráfica de correlación
+
+# Bigramas
+
+set.seed(1000)
+
+tokenized_count_bigram <- tokenized_bigrams %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 9) %>%
+  mutate(word = reorder(word, n))
+
+bigrams_separated <- tokenized_count_bigram %>%
+  separate(word, c("word1", "word2"), sep = " ")
+
+a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
+
+ggraph(bigrams_separated, layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
+                 arrow = a, end_cap = circle(.07, 'inches')) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+  theme_void()
+
+# Trigramas
+
+set.seed(2000)
+
+tokenized_count_trigram <- tokenized_trigrams %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 9) %>%
+  mutate(word = reorder(word, n))
+
+trigrams_separated <- tokenized_count_trigram %>%
+  separate(word, c("word1", "word2"), sep = " ")
+
+ggraph(trigrams_separated, layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
+                 arrow = a, end_cap = circle(.07, 'inches')) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+  theme_void()
 
  # ggarrange(plot_joy, plot_sadness, plot_trust, plot_fear, plot_surprise, plot_disgust, rremove("x.text"),
   #        nrow = 3, ncol = 2)
